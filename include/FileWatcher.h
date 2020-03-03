@@ -4,22 +4,36 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <sys/event.h>
 
 class FileWatcher
 {
 public:
-    FileWatcher(std::string directory, std::string subFilter);
+    FileWatcher(std::string directory, std::string subFilter = "*", int kq = kqueue());
     ~FileWatcher();
 
-    void registerOnDeleteCb(std::function<void> cb);
+    void registerOnDeleteCb(std::function<void(FileWatcher *)> cb);
+
+    /**
+     * @brief   blocking wait untill the file changes
+     */
+    void watchForEvent();
 
 private:
+    typedef struct kevent TKevent;
     std::string _directory;
-    std::string _subFilter;
+    std::string _fileFilter;
+    int _folderHandler;
+    int _kq;
+    TKevent _dirEvent;
+    TKevent _event;
 
     std::function<void(FileWatcher *)> onDeleteCb;
 
-    std::vector<FileWatcher> _subFiles;
+    std::vector<std::shared_ptr<FileWatcher>> _subFiles;
+
+    void registerSubdirectoris();
+    void onEvent(TKevent *event);
 };
 
 #endif

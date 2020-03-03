@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
+
+set(CMAKE_Sznc_COMPILER g++)
 set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_C_COMPILER gcc)
 project(Display Sync)

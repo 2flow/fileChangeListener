@@ -1,0 +1,10 @@
+
+OBJ = src/main.cpp
+
+_OBJ = $(patsubst /%.cpp,$(bin/%.o),$(OBJ))
+
+display_sync: $(_OBJ)
+	g++  -o $@ $^
+
+bin/%.o: src/%.cpp
+	g++ -c -o $@ $<
