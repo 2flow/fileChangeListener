@@ -8,6 +8,7 @@
 #include <string.h>    // for strerror()
 #include <sys/event.h> // for kqueue() etc.
 #include <unistd.h>    // for close()
+#include <dirent.h>
 
 int main(int argc, char *argv[])
 {
@@ -16,16 +17,23 @@ int main(int argc, char *argv[])
         std::cout << "usage: display_sync [branch name]" << std::endl;
         return 0;
     }
-    std::string curDir(argv[0]);
+    size_t size = 200;
+    char *path = new char[size];
+    getcwd(path, size);
+    std::cout << path << std::endl;
+    std::string curDir(path);
+    delete[] path;
     int pos = curDir.find_last_of("/\\");
-    curDir = curDir.substr(0, pos) + "/temp";
+    std::string repoDir = curDir.substr(0, pos) + "/temp";
+
     std::string filter = "";
-    std::string initGitCommand = "./initGit.sh " + curDir + " " + argv[1];
-    std::string pushGit = "./pushGit.sh " + curDir + " " + argv[1];
+    std::string initGitCommand = "./initGit.sh " + curDir + repoDir + " " + argv[1];
+    std::string pushGit = "./pushGit.sh " + repoDir + " " + argv[1];
 
     system(initGitCommand.c_str());
+    return 0;
     FileWatcher watcher{
-        curDir,
+        repoDir,
         filter};
 
     while (1)

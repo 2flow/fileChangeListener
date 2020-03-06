@@ -1,19 +1,19 @@
 #!/bin/bash
 
-$folder=$1
-$branch=$2
+cd $1
 
-rm -rf $folder
-mkdir $folder
+rm -rf $2
+echo $2
+mkdir $2
 
-cd $folder
+cd $2
 
 git clone https://github.com/kiskadigitalmedia/kDisplayDesigneSync.git
-git branch $branch
-git checkout $branch
+git branch $3
+git checkout $3
 
 echo "Hello World" > setup.txt 
 
 git add .
 git commit -m "commit"
-git push origin master $branch --force
+git push origin master $3 --force
