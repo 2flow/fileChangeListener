@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
     std::string pushGit = "./pushGit.sh " + repoDir + " " + argv[1];
 
     system(initGitCommand.c_str());
-    return 0;
     FileWatcher watcher{
         repoDir,
         filter};
