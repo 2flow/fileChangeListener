@@ -17,7 +17,7 @@ public:
     /**
      * @brief   blocking wait untill the file changes
      */
-    void watchForEvent();
+    void watchForEvent(size_t timeout);
 
 private:
     typedef struct kevent TKevent;
@@ -26,7 +26,6 @@ private:
     int _folderHandler;
     int _kq;
     TKevent _dirEvent;
-    TKevent _event;
 
     std::function<void(FileWatcher *)> onDeleteCb;
 

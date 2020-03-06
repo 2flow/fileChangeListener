@@ -7,7 +7,7 @@
 #include <iostream>
 #include "FileWatcher.h"
 using namespace std;
-char *abcdd = "alskjdflads";
+
 FileWatcher::FileWatcher(std::string directory, std::string fileFilter, int kq)
     : _directory{directory}, _fileFilter{fileFilter}, _kq{kq}
 {
@@ -35,8 +35,14 @@ void FileWatcher::registerOnDeleteCb(std::function<void(FileWatcher *)> cb)
     onDeleteCb = cb;
 }
 
-void FileWatcher::watchForEvent()
+void FileWatcher::watchForEvent(size_t timeout)
 {
+    timespec time;
+    time.tv_sec = timeout;
+    timespec *pTime = &time;
+    if (timeout == 0)
+        pTime = NULL;
+
     struct kevent change;
     if (kevent(_kq, NULL, 0, &change, 1, NULL) == -1)
     {
