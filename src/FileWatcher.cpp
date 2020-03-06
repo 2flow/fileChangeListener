@@ -73,9 +73,10 @@ void FileWatcher::registerSubdirectoris()
 
         while ((ent = readdir(dir)) != NULL)
         {
-            if ((strcmp(ent->d_name, ".") != 0) && (strcmp(ent->d_name, "..") != 0))
+            string dirname = ent->d_name;
+            if ((strcmp(ent->d_name, ".") != 0) && (strcmp(ent->d_name, "..") != 0) &&
+                (dirname.find(".git") == string::npos))
             {
-
                 this->_subFiles.push_back(make_shared<FileWatcher>(_directory + "/" + ent->d_name, "*", _kq));
             }
         }

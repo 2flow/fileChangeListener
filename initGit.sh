@@ -8,7 +8,7 @@ mkdir $2
 
 cd $2
 
-git clone https://github.com/kiskadigitalmedia/kDisplayDesigneSync.git
+git clone https://github.com/kiskadigitalmedia/kDisplayDesigneSync.git .
 git branch $3
 git checkout $3
 
